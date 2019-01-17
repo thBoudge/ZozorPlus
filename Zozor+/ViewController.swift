@@ -30,7 +30,9 @@ class ViewController: UIViewController {
         }
         return true
     }
-
+    
+    
+   
     var canAddOperator: Bool {
         if let stringNumber = stringNumbers.last {
             if stringNumber.isEmpty {
@@ -91,6 +93,7 @@ class ViewController: UIViewController {
         updateDisplay()
     }
 
+    
     func calculateTotal() {
         if !isExpressionCorrect {
             return
