@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		142F298A21F0CDE3003C89E4 /* Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142F298921F0CDE3003C89E4 /* Operator.swift */; };
 		C926DADD1D7581BB00477020 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C926DADC1D7581BB00477020 /* AppDelegate.swift */; };
 		C926DADF1D7581BB00477020 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C926DADE1D7581BB00477020 /* ViewController.swift */; };
 		C926DAE21D7581BB00477020 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C926DAE01D7581BB00477020 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		142F298921F0CDE3003C89E4 /* Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operator.swift; sourceTree = "<group>"; };
 		C926DAD91D7581BB00477020 /* CountOnMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CountOnMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C926DADC1D7581BB00477020 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C926DADE1D7581BB00477020 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -37,6 +39,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		142F298521F0C9DB003C89E4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C926DAE01D7581BB00477020 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		142F298621F0C9F4003C89E4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				142F298921F0CDE3003C89E4 /* Operator.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		142F298721F0CA05003C89E4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C926DADE1D7581BB00477020 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		142F298821F0CA1C003C89E4 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C926DADC1D7581BB00477020 /* AppDelegate.swift */,
+				C926DAE31D7581BB00477020 /* Assets.xcassets */,
+				C926DAE51D7581BB00477020 /* LaunchScreen.storyboard */,
+				C926DAE81D7581BB00477020 /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		C926DAD01D7581BB00477020 = {
 			isa = PBXGroup;
 			children = (
@@ -57,12 +94,10 @@
 		C926DADB1D7581BB00477020 /* CountOnMe */ = {
 			isa = PBXGroup;
 			children = (
-				C926DADC1D7581BB00477020 /* AppDelegate.swift */,
-				C926DADE1D7581BB00477020 /* ViewController.swift */,
-				C926DAE01D7581BB00477020 /* Main.storyboard */,
-				C926DAE31D7581BB00477020 /* Assets.xcassets */,
-				C926DAE51D7581BB00477020 /* LaunchScreen.storyboard */,
-				C926DAE81D7581BB00477020 /* Info.plist */,
+				142F298521F0C9DB003C89E4 /* View */,
+				142F298621F0C9F4003C89E4 /* Model */,
+				142F298721F0CA05003C89E4 /* Controller */,
+				142F298821F0CA1C003C89E4 /* Supporting Files */,
 			);
 			name = CountOnMe;
 			path = "Zozor+";
@@ -143,6 +178,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C926DADF1D7581BB00477020 /* ViewController.swift in Sources */,
+				142F298A21F0CDE3003C89E4 /* Operator.swift in Sources */,
 				C926DADD1D7581BB00477020 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,7 +316,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 7XB8K9T4CZ;
-				INFOPLIST_FILE = "Zozor+/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Zozor+/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ambroisecollon.CountOnMe;
@@ -296,7 +332,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 7XB8K9T4CZ;
-				INFOPLIST_FILE = "Zozor+/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Zozor+/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ambroisecollon.CountOnMe;

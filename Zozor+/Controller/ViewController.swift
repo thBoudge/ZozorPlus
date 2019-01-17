@@ -13,6 +13,8 @@ class ViewController: UIViewController {
     var stringNumbers: [String] = [String()]
     var operators: [String] = ["+"]
     var index = 0
+    
+    //logic Screen
     var isExpressionCorrect: Bool {
         if let stringNumber = stringNumbers.last {
             if stringNumber.isEmpty {
@@ -32,7 +34,7 @@ class ViewController: UIViewController {
     }
     
     
-   
+    // logique Operator
     var canAddOperator: Bool {
         if let stringNumber = stringNumbers.last {
             if stringNumber.isEmpty {
@@ -52,28 +54,55 @@ class ViewController: UIViewController {
     @IBOutlet var numberButtons: [UIButton]!
 
     // MARK: - Action
-
-    @IBAction func tappedNumberButton(_ sender: UIButton) {
-        for (i, numberButton) in numberButtons.enumerated() {
-            if sender == numberButton {
-                addNewNumber(i)
+    var operat: Operator!
+    
+    @IBAction func operatorButtonAction(_ sender: UIButton) {
+      switch sender.tag {
+        case 0:
+            operat = .plus
+            if canAddOperator {
+                operators.append(operat.display)
+                stringNumbers.append("")
+                updateDisplay()
             }
+        case 1:
+            operat = .minus
+            if canAddOperator {
+                operators.append(operat.display)
+                stringNumbers.append("")
+                updateDisplay()
+            }
+        case 3:
+            operat = .multiplicator
+            if canAddOperator {
+                operators.append(operat.display)
+                stringNumbers.append("")
+                updateDisplay()
+            }
+        case 4:
+            operat = .division
+            if canAddOperator {
+                operators.append(operat.display)
+                stringNumbers.append("")
+                updateDisplay()
+            }
+        default:
+            break
         }
+        
     }
-
-    @IBAction func plus() {
-        if canAddOperator {
-        	operators.append("+")
-        	stringNumbers.append("")
-            updateDisplay()
-        }
-    }
-
-    @IBAction func minus() {
-        if canAddOperator {
-            operators.append("-")
-            stringNumbers.append("")
-            updateDisplay()
+   
+    
+    @IBAction func tappedNumberButton(_ sender: UIButton) {
+         switch sender.tag {
+         case 0,1,2,3,4,5,6,7,8,9 :
+            addNewNumber(sender.tag)
+         case 10 :
+            clear()
+         case 11 :
+            addDot()
+         default:
+            break
         }
     }
 
@@ -92,8 +121,18 @@ class ViewController: UIViewController {
         }
         updateDisplay()
     }
-
     
+    //A revoir
+    func addDot() {
+        if let stringNumber = stringNumbers.last {
+            var stringNumberMutable = stringNumber
+            stringNumberMutable += "."
+            stringNumbers[stringNumbers.count-1] = stringNumberMutable
+        }
+        updateDisplay()
+    }
+
+    // logic Calcul
     func calculateTotal() {
         if !isExpressionCorrect {
             return
