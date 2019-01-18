@@ -13,6 +13,8 @@ class ViewController: UIViewController {
     var stringNumbers: [String] = [String()]
     var operators: [String] = ["+"]
     var index = 0
+    var numbersDoubles: [Double] = []
+    var number: Double = 0.0
     
     //logic Screen
     var isExpressionCorrect: Bool {
@@ -124,7 +126,40 @@ class ViewController: UIViewController {
     
     //A revoir
     func addDot() {
-        if let stringNumber = stringNumbers.last {
+        
+        var noDot: Bool = true
+        
+       /* let start = stringNumbers.lastIndex(of: " ")
+        
+        for i in start...stringNumbers.count {
+            
+            if stringNumbers[i] == "." {
+                    noDot = false
+                }
+            }*/
+        
+       for (i, stringNumber) in stringNumbers.enumerated().reversed(){
+            
+            if i == 0 {
+                
+                if stringNumber.contains("."){
+                    noDot = false
+                }
+            }
+        }
+        
+       /* for i in (0..<stringNumbers.enumerated()).reversed() {
+         
+            if stringNumbers[i] == " " {
+                
+            }
+            
+         }*/
+        if noDot == false {
+            let alertVC = UIAlertController(title: "Le chiffre possede deja une virgule", message: "On ne peut pas utiliser 2 virgules", preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            self.present(alertVC, animated: true, completion: nil)
+        }else if let stringNumber = stringNumbers.last {
             var stringNumberMutable = stringNumber
             stringNumberMutable += "."
             stringNumbers[stringNumbers.count-1] = stringNumberMutable
@@ -137,23 +172,83 @@ class ViewController: UIViewController {
         if !isExpressionCorrect {
             return
         }
-
-        var total = 0
-        for (i, stringNumber) in stringNumbers.enumerated() {
-            if let number = Int(stringNumber) {
+       for (_, stringNumber) in stringNumbers.enumerated() {
+           if let number = Double(stringNumber) { numbersDoubles.append(number)
+            }
+        }
+        
+       priorityMultiDivi()
+        
+        var total: Double = 0.0
+        for i in 0..<numbersDoubles.count {
+            number = numbersDoubles[i]
+                if operators[i] == "+" {
+                    total += number
+                } else if operators[i] == "-" {
+                    total -= number
+                }
+        }
+        
+       //demander explication (i, stringNumber)
+       /* for (i, stringNumber) in stringNumbers.enumerated() {
+            if let number = Double(stringNumber) {
                 if operators[i] == "+" {
                     total += number
                 } else if operators[i] == "-" {
                     total -= number
                 }
             }
-        }
+        }*/
 
         textView.text = textView.text + "=\(total)"
 
         clear()
     }
 
+    func priorityMultiDivi() {
+        
+        for i in 1..<operators.count {
+            if i < operators.count {
+                number = numbersDoubles[i-1]
+                if operators[i] == "x" {
+                    operateMultiDivAndTroncateArray(index: i, sign: "x")
+                    
+                }else if operators[i] == "/" {
+                    // error if divided by zero
+                    if numbersDoubles[i] == 0 {
+                        let alertVC = UIAlertController(title: "Division by Zéro!", message: "On ne peut pas diviser par zéro", preferredStyle: .alert)
+                        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                        self.present(alertVC, animated: true, completion: nil)
+                        break
+                        
+                    }else{
+                        operateMultiDivAndTroncateArray(index: i, sign: "/")
+                    }}
+            }
+        }
+        
+        
+        if operators.last == "/" {
+            operateMultiDivAndTroncateArray(index: operators.count-1, sign: "/")
+        }
+        if operators.last == "x" {
+            operateMultiDivAndTroncateArray(index: operators.count-1, sign: "*")
+        }
+        
+    }
+    
+    func operateMultiDivAndTroncateArray(index:Int , sign: String) {
+        if sign == "x"{
+            number = numbersDoubles[index-1] * numbersDoubles[index]
+        }else if sign == "/"{
+            number = numbersDoubles[index-1] / numbersDoubles[index]
+        }
+    numbersDoubles[index-1] = number
+    numbersDoubles.remove(at: index)
+    operators.remove(at: index)
+    
+    }
+    
     func updateDisplay() {
         var text = ""
         for (i, stringNumber) in stringNumbers.enumerated() {
@@ -171,5 +266,7 @@ class ViewController: UIViewController {
         stringNumbers = [String()]
         operators = ["+"]
         index = 0
+        numbersDoubles = []
+        number = 0.0
     }
 }
