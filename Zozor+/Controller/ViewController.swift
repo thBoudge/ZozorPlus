@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     // MARK: - Properties
     var stringNumbers: [String] = [String()]
     var operators: [String] = ["+"]
-    var index = 0
+    //var index = 0
     var numbersDoubles: [Double] = []
     var number: Double = 0.0
     
@@ -62,32 +62,16 @@ class ViewController: UIViewController {
       switch sender.tag {
         case 0:
             operat = .plus
-            if canAddOperator {
-                operators.append(operat.display)
-                stringNumbers.append("")
-                updateDisplay()
-            }
+            addNewOperator()
         case 1:
             operat = .minus
-            if canAddOperator {
-                operators.append(operat.display)
-                stringNumbers.append("")
-                updateDisplay()
-            }
+            addNewOperator()
         case 3:
             operat = .multiplicator
-            if canAddOperator {
-                operators.append(operat.display)
-                stringNumbers.append("")
-                updateDisplay()
-            }
+            addNewOperator()
         case 4:
             operat = .division
-            if canAddOperator {
-                operators.append(operat.display)
-                stringNumbers.append("")
-                updateDisplay()
-            }
+            addNewOperator()
         default:
             break
         }
@@ -100,7 +84,7 @@ class ViewController: UIViewController {
          case 0,1,2,3,4,5,6,7,8,9 :
             addNewNumber(sender.tag)
          case 10 :
-            clear()
+            cancel()
          case 11 :
             addDot()
          default:
@@ -124,45 +108,28 @@ class ViewController: UIViewController {
         updateDisplay()
     }
     
+    func addNewOperator() {
+        if canAddOperator {
+            operators.append(operat.display)
+            stringNumbers.append("")
+            updateDisplay()
+        }
+    }
+    
     //A revoir
     func addDot() {
         
-        var noDot: Bool = true
-        
-       /* let start = stringNumbers.lastIndex(of: " ")
-        
-        for i in start...stringNumbers.count {
+         if let stringNumber = stringNumbers.last {
+            if stringNumber.contains("."){
             
-            if stringNumbers[i] == "." {
-                    noDot = false
-                }
-            }*/
-        
-       for (i, stringNumber) in stringNumbers.enumerated().reversed(){
-            
-            if i == 0 {
-                
-                if stringNumber.contains("."){
-                    noDot = false
-                }
+                let alertVC = UIAlertController(title: "Le chiffre possede deja une virgule", message: "On ne peut pas utiliser 2 virgules", preferredStyle: .alert)
+                alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                self.present(alertVC, animated: true, completion: nil)
+            }else if let stringNumber = stringNumbers.last {
+                var stringNumberMutable = stringNumber
+                stringNumberMutable += "."
+                stringNumbers[stringNumbers.count-1] = stringNumberMutable
             }
-        }
-        
-       /* for i in (0..<stringNumbers.enumerated()).reversed() {
-         
-            if stringNumbers[i] == " " {
-                
-            }
-            
-         }*/
-        if noDot == false {
-            let alertVC = UIAlertController(title: "Le chiffre possede deja une virgule", message: "On ne peut pas utiliser 2 virgules", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alertVC, animated: true, completion: nil)
-        }else if let stringNumber = stringNumbers.last {
-            var stringNumberMutable = stringNumber
-            stringNumberMutable += "."
-            stringNumbers[stringNumbers.count-1] = stringNumberMutable
         }
         updateDisplay()
     }
@@ -206,13 +173,11 @@ class ViewController: UIViewController {
     }
 
     func priorityMultiDivi() {
-        
         for i in 1..<operators.count {
             if i < operators.count {
                 number = numbersDoubles[i-1]
                 if operators[i] == "x" {
                     operateMultiDivAndTroncateArray(index: i, sign: "x")
-                    
                 }else if operators[i] == "/" {
                     // error if divided by zero
                     if numbersDoubles[i] == 0 {
@@ -220,10 +185,10 @@ class ViewController: UIViewController {
                         alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
                         self.present(alertVC, animated: true, completion: nil)
                         break
-                        
                     }else{
                         operateMultiDivAndTroncateArray(index: i, sign: "/")
-                    }}
+                    }
+                }
             }
         }
         
@@ -265,8 +230,13 @@ class ViewController: UIViewController {
     func clear() {
         stringNumbers = [String()]
         operators = ["+"]
-        index = 0
+        //index = 0
         numbersDoubles = []
         number = 0.0
+     }
+    
+    func cancel() {
+        clear()
+        textView.text = "0"
     }
 }
