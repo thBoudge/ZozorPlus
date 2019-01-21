@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		142F298A21F0CDE3003C89E4 /* Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142F298921F0CDE3003C89E4 /* Operator.swift */; };
 		149991B421F26C55003CEB12 /* Calculate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149991B321F26C55003CEB12 /* Calculate.swift */; };
 		C926DADD1D7581BB00477020 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C926DADC1D7581BB00477020 /* AppDelegate.swift */; };
 		C926DADF1D7581BB00477020 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C926DADE1D7581BB00477020 /* ViewController.swift */; };
@@ -18,7 +17,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		142F298921F0CDE3003C89E4 /* Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operator.swift; sourceTree = "<group>"; };
 		149991B321F26C55003CEB12 /* Calculate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculate.swift; sourceTree = "<group>"; };
 		C926DAD91D7581BB00477020 /* CountOnMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CountOnMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C926DADC1D7581BB00477020 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -52,7 +50,6 @@
 		142F298621F0C9F4003C89E4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				142F298921F0CDE3003C89E4 /* Operator.swift */,
 				149991B321F26C55003CEB12 /* Calculate.swift */,
 			);
 			path = Model;
@@ -116,6 +113,7 @@
 				C926DAD51D7581BB00477020 /* Sources */,
 				C926DAD61D7581BB00477020 /* Frameworks */,
 				C926DAD71D7581BB00477020 /* Resources */,
+				14E3E0A421F610CF00B52394 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -175,6 +173,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		14E3E0A421F610CF00B52394 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "
+";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C926DAD51D7581BB00477020 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -182,7 +201,6 @@
 			files = (
 				149991B421F26C55003CEB12 /* Calculate.swift in Sources */,
 				C926DADF1D7581BB00477020 /* ViewController.swift in Sources */,
-				142F298A21F0CDE3003C89E4 /* Operator.swift in Sources */,
 				C926DADD1D7581BB00477020 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

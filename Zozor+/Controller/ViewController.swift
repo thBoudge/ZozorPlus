@@ -10,45 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
     // MARK: - Properties
-    var stringNumbers: [String] = [String()]
-    var operators: [String] = ["+"]
-    //var index = 0
-    var numbersDoubles: [Double] = []
-    var number: Double = 0.0
-    
-    //logic Screen
-    var isExpressionCorrect: Bool {
-        if let stringNumber = stringNumbers.last {
-            if stringNumber.isEmpty {
-                if stringNumbers.count == 1 {
-                    let alertVC = UIAlertController(title: "Zéro!", message: "Démarrez un nouveau calcul !", preferredStyle: .alert)
-                    alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-                    self.present(alertVC, animated: true, completion: nil)
-                } else {
-                    let alertVC = UIAlertController(title: "Zéro!", message: "Entrez une expression correcte !", preferredStyle: .alert)
-                    alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-                    self.present(alertVC, animated: true, completion: nil)
-                }
-                return false
-            }
-        }
-        return true
-    }
-    
-    
-    // logique Operator
-    var canAddOperator: Bool {
-        if let stringNumber = stringNumbers.last {
-            if stringNumber.isEmpty {
-                let alertVC = UIAlertController(title: "Zéro!", message: "Expression incorrecte !", preferredStyle: .alert)
-                alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-                self.present(alertVC, animated: true, completion: nil)
-                return false
-            }
-        }
-        return true
-    }
 
+    let calculate =  Calculate()
+    var operationIsInProcess: Bool = false
+    
 
     // MARK: - Outlets
 
@@ -56,187 +21,64 @@ class ViewController: UIViewController {
     @IBOutlet var numberButtons: [UIButton]!
 
     // MARK: - Action
-    var operat: Operator!
-    
+
     @IBAction func operatorButtonAction(_ sender: UIButton) {
-      switch sender.tag {
-        case 0:
-            operat = .plus
-            addNewOperator()
-        case 1:
-            operat = .minus
-            addNewOperator()
-        case 3:
-            operat = .multiplicator
-            addNewOperator()
-        case 4:
-            operat = .division
-            addNewOperator()
+      switch sender.title(for: .normal) { //a revoir
+        case "+":
+            calculate.selectionDelegate = self
+            textView.text += calculate.addNewOperator("+")
+        case "-":
+            calculate.selectionDelegate = self
+            textView.text += calculate.addNewOperator("-")
+        case "x":
+            calculate.selectionDelegate = self
+            textView.text += calculate.addNewOperator("x")
+        case "/":
+            calculate.selectionDelegate = self
+            textView.text += calculate.addNewOperator("/")
         default:
             break
         }
         
     }
    
-    
     @IBAction func tappedNumberButton(_ sender: UIButton) {
          switch sender.tag {
-         case 0,1,2,3,4,5,6,7,8,9 :
-            addNewNumber(sender.tag)
          case 10 :
             cancel()
          case 11 :
-            addDot()
+            calculate.selectionDelegate = self
+            textView.text += calculate.addDot()
          default:
-            break
+            calculate.selectionDelegate = self
+            if !operationIsInProcess {
+                textView.text = ""
+                textView.text += calculate.addNewNumber(sender.tag)
+                operationIsInProcess = true
+            }else {
+                textView.text += calculate.addNewNumber(sender.tag)
+            }
         }
     }
 
     @IBAction func equal() {
-        calculateTotal()
+        calculate.selectionDelegate = self
+        textView.text += "= " + calculate.calculateTotal()
+        operationIsInProcess = false
     }
-
-
-    // MARK: - Methods
-
-    func addNewNumber(_ newNumber: Int) {
-        if let stringNumber = stringNumbers.last {
-            var stringNumberMutable = stringNumber
-            stringNumberMutable += "\(newNumber)"
-            stringNumbers[stringNumbers.count-1] = stringNumberMutable
-        }
-        updateDisplay()
-    }
-    
-    func addNewOperator() {
-        if canAddOperator {
-            operators.append(operat.display)
-            stringNumbers.append("")
-            updateDisplay()
-        }
-    }
-    
-    //A revoir
-    func addDot() {
-        
-         if let stringNumber = stringNumbers.last {
-            if stringNumber.contains("."){
-            
-                let alertVC = UIAlertController(title: "Le chiffre possede deja une virgule", message: "On ne peut pas utiliser 2 virgules", preferredStyle: .alert)
-                alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-                self.present(alertVC, animated: true, completion: nil)
-            }else if let stringNumber = stringNumbers.last {
-                var stringNumberMutable = stringNumber
-                stringNumberMutable += "."
-                stringNumbers[stringNumbers.count-1] = stringNumberMutable
-            }
-        }
-        updateDisplay()
-    }
-
-    // logic Calcul
-    func calculateTotal() {
-        if !isExpressionCorrect {
-            return
-        }
-       for (_, stringNumber) in stringNumbers.enumerated() {
-           if let number = Double(stringNumber) { numbersDoubles.append(number)
-            }
-        }
-        
-       priorityMultiDivi()
-        
-        var total: Double = 0.0
-        for i in 0..<numbersDoubles.count {
-            number = numbersDoubles[i]
-                if operators[i] == "+" {
-                    total += number
-                } else if operators[i] == "-" {
-                    total -= number
-                }
-        }
-        
-       //demander explication (i, stringNumber)
-       /* for (i, stringNumber) in stringNumbers.enumerated() {
-            if let number = Double(stringNumber) {
-                if operators[i] == "+" {
-                    total += number
-                } else if operators[i] == "-" {
-                    total -= number
-                }
-            }
-        }*/
-
-        textView.text = textView.text + "=\(total)"
-
-        clear()
-    }
-
-    func priorityMultiDivi() {
-        for i in 1..<operators.count {
-            if i < operators.count {
-                number = numbersDoubles[i-1]
-                if operators[i] == "x" {
-                    operateMultiDivAndTroncateArray(index: i, sign: "x")
-                }else if operators[i] == "/" {
-                    // error if divided by zero
-                    if numbersDoubles[i] == 0 {
-                        let alertVC = UIAlertController(title: "Division by Zéro!", message: "On ne peut pas diviser par zéro", preferredStyle: .alert)
-                        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-                        self.present(alertVC, animated: true, completion: nil)
-                        break
-                    }else{
-                        operateMultiDivAndTroncateArray(index: i, sign: "/")
-                    }
-                }
-            }
-        }
-        
-        
-        if operators.last == "/" {
-            operateMultiDivAndTroncateArray(index: operators.count-1, sign: "/")
-        }
-        if operators.last == "x" {
-            operateMultiDivAndTroncateArray(index: operators.count-1, sign: "*")
-        }
-        
-    }
-    
-    func operateMultiDivAndTroncateArray(index:Int , sign: String) {
-        if sign == "x"{
-            number = numbersDoubles[index-1] * numbersDoubles[index]
-        }else if sign == "/"{
-            number = numbersDoubles[index-1] / numbersDoubles[index]
-        }
-    numbersDoubles[index-1] = number
-    numbersDoubles.remove(at: index)
-    operators.remove(at: index)
-    
-    }
-    
-    func updateDisplay() {
-        var text = ""
-        for (i, stringNumber) in stringNumbers.enumerated() {
-            // Add operator
-            if i > 0 {
-                text += operators[i]
-            }
-            // Add number
-            text += stringNumber
-        }
-        textView.text = text
-    }
-
-    func clear() {
-        stringNumbers = [String()]
-        operators = ["+"]
-        //index = 0
-        numbersDoubles = []
-        number = 0.0
-     }
+// MARK: - Methods
     
     func cancel() {
-        clear()
+        calculate.clear()
         textView.text = "0"
+    }
+}
+
+
+extension ViewController : AlertSelectionDelegate {
+    func alertOnActionButton (name: String, description: String){
+        let alertVC = UIAlertController(title: name, message: description, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        self.present(alertVC, animated: true, completion: nil)
     }
 }
