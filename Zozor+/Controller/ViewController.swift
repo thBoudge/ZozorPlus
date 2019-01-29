@@ -20,26 +20,16 @@ class ViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var numberButtons: [UIButton]!
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        calculate.selectionDelegate = self //pour dire que le protocole va etre implementé dans cette class et que le code est dans cette class
+    }
+    
     // MARK: - Action
 
     @IBAction func operatorButtonAction(_ sender: UIButton) {
-      switch sender.title(for: .normal) { //a revoir
-        case "+":
-            calculate.selectionDelegate = self
-            textView.text += calculate.addNewOperator("+")
-        case "-":
-            calculate.selectionDelegate = self
-            textView.text += calculate.addNewOperator("-")
-        case "x":
-            calculate.selectionDelegate = self
-            textView.text += calculate.addNewOperator("x")
-        case "/":
-            calculate.selectionDelegate = self
-            textView.text += calculate.addNewOperator("/")
-        default:
-            break
-        }
-        
+        guard let buttonTitle = sender.title(for: .normal) else {return}
+       textView.text += calculate.addNewOperator(buttonTitle)
     }
    
     @IBAction func tappedNumberButton(_ sender: UIButton) {
@@ -47,11 +37,9 @@ class ViewController: UIViewController {
          case 10 :
             cancel()
          case 11 :
-            calculate.selectionDelegate = self
             textView.text += calculate.addDot()
          default:
-            calculate.selectionDelegate = self
-            if !operationIsInProcess {
+            if !operationIsInProcess {//a voir si variable a mettre dans le model************************************
                 textView.text = ""
                 textView.text += calculate.addNewNumber(sender.tag)
                 operationIsInProcess = true
@@ -62,7 +50,6 @@ class ViewController: UIViewController {
     }
 
     @IBAction func equal() {
-        calculate.selectionDelegate = self
         textView.text += "= " + calculate.calculateTotal()
         operationIsInProcess = false
     }
@@ -79,6 +66,6 @@ extension ViewController : AlertSelectionDelegate {
     func alertOnActionButton (name: String, description: String){
         let alertVC = UIAlertController(title: name, message: description, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        self.present(alertVC, animated: true, completion: nil)
+        present(alertVC, animated: true, completion: nil)
     }
 }
