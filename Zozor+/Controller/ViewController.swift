@@ -11,8 +11,8 @@ import UIKit
 class ViewController: UIViewController {
     // MARK: - Properties
 
-    let calculate =  Calculate()
-    var operationIsInProcess: Bool = false
+    private let calculate =  Calculate()
+    private var operationIsInProcess: Bool = false
     
 
     // MARK: - Outlets
@@ -22,7 +22,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        calculate.selectionDelegate = self //pour dire que le protocole va etre implementé dans cette class et que le code est dans cette class
+        calculate.selectionDelegate = self //to tell that protocol is implemented on this class and code is on it
     }
     
     // MARK: - Action
@@ -39,11 +39,12 @@ class ViewController: UIViewController {
          case 11 :
             textView.text += calculate.addDot()
          default:
-            if !operationIsInProcess {//a voir si variable a mettre dans le model************************************
+            //Start of Operation
+            if !operationIsInProcess {
                 textView.text = ""
                 textView.text += calculate.addNewNumber(sender.tag)
                 operationIsInProcess = true
-            }else {
+            }else { // Operation already started
                 textView.text += calculate.addNewNumber(sender.tag)
             }
         }
@@ -55,13 +56,15 @@ class ViewController: UIViewController {
     }
 // MARK: - Methods
     
+    // Function in order to cancel and start a new operation
     func cancel() {
         calculate.clear()
         textView.text = "0"
     }
 }
 
-
+// MARK: - Extension
+//Implementation of Method alertOnActionButton from Protocol AlertSelectionDelegate
 extension ViewController : AlertSelectionDelegate {
     func alertOnActionButton (name: String, description: String){
         let alertVC = UIAlertController(title: name, message: description, preferredStyle: .alert)

@@ -8,6 +8,7 @@
 
 import Foundation
 
+// protocol for all alert CountOnMe Application
 protocol AlertSelectionDelegate {
     func alertOnActionButton (name: String, description: String)
 }
@@ -15,10 +16,10 @@ protocol AlertSelectionDelegate {
 class Calculate {
 
 // MARK: - Properties
-    var stringNumbers: [String]
-    var operators: [String]
-    var numbersDoubles: [Double]
-    var number: Double
+    private var stringNumbers: [String]
+    private var operators: [String]
+    private var numbersDoubles: [Double]
+    private var number: Double
     var selectionDelegate : AlertSelectionDelegate?
     
     init() {
@@ -28,7 +29,9 @@ class Calculate {
         number = 0.0
     }
     
-    //test le true et false
+    
+    
+    //Control if operate entered are correct before to use = (=without figure or 2+-3-2=)
     var isExpressionCorrect: Bool {
         if let stringNumber = stringNumbers.last {
             if stringNumber.isEmpty {
@@ -43,7 +46,7 @@ class Calculate {
         return true
     }
     
-    //test true ou false
+    //Control if we can add a new operator or not (-2+3)
     var canAddOperator: Bool {
         if let stringNumber = stringNumbers.last {
             if stringNumber.isEmpty {
@@ -55,30 +58,37 @@ class Calculate {
     }
     
 // MARK: - Methods
-    //Test
+    
+    //Method start when = is tapped
     func calculateTotal() -> String {
         if !isExpressionCorrect {
-            return " "
+            return ""
         }
+        //Create an Array of double from stringNumbers array
         for (_, stringNumber) in stringNumbers.enumerated() {
             if let figure = Double(stringNumber) { numbersDoubles.append(figure)
             }
         }
-        priorityMultiDivi()
+       
         var total: Double = 0.0
-        for i in 0..<numbersDoubles.count {
-            number = numbersDoubles[i]
-            if operators[i] == "+" {
-                total += number
-            } else if operators[i] == "-" {
-                total -= number
+        
+        if priorityMultiDivi(){
+            for i in 0..<numbersDoubles.count {
+                number = numbersDoubles[i]
+                if operators[i] == "+" {
+                    total += number
+                } else if operators[i] == "-" {
+                    total -= number
+                }
             }
         }
+        
         clear()
         return String(total)
     }
-
-    func priorityMultiDivi() {
+    
+    // Method to respect priority operation in order to start with x and /
+    func priorityMultiDivi() -> Bool{
         for i in 1..<operators.count {
             if i < operators.count {
                 number = numbersDoubles[i-1]
@@ -88,53 +98,47 @@ class Calculate {
                     // error if divided by zero
                     if numbersDoubles[i] == 0 {
                         selectionDelegate?.alertOnActionButton(name: "Division by Zéro!", description: "On ne peut pas diviser par zéro")
-                        break
+                        return false
                     }else{
                         operateMultiDivAndTroncateArray(index: i, sign: "/")
                     }
                 }
             }
         }
-       /* if operators[operators.count-1] == "/" {
-            operateMultiDivAndTroncateArray(index: operators.count-1, sign: "/")
-        }
-        if operators[operators.count-1] == "x" {
-            operateMultiDivAndTroncateArray(index: operators.count-1, sign: "*")
-        }*/
+        return true
     }
     
+    //Method that multiplicate and divide figure and change numbersDouble to reflect result
     func operateMultiDivAndTroncateArray(index:Int , sign: String) {
         if sign == "x"{
             number = numbersDoubles[index-1] * numbersDoubles[index]
         }else if sign == "/"{
             number = numbersDoubles[index-1] / numbersDoubles[index]
         }
-        numbersDoubles[index-1] = 0.0
-        numbersDoubles[index] = number
-        operators[index] = "+"
+        // In case 2-2x9 if last sign is - before x or \ , in order to keep - 2-18
+        if index == operators.count-1 && operators[index-1] == "-" {
+            numbersDoubles[index-1] = 0.0 
+            numbersDoubles[index] = number
+            operators[index-1] = "+"
+            operators[index] = "-"
+        }else {
+            numbersDoubles[index-1] = 0.0
+            numbersDoubles[index] = number
+            operators[index] = "+"
+        }
+        
         
     }
     
-    func updateDisplay() -> String {
-        var text = ""
-        for (i, stringNumber) in stringNumbers.enumerated() {
-            // Add operator
-            if i > 0 {
-                text += operators[i]
-            }
-            // Add number
-            text += stringNumber
-        }
-        return text
-    }
-    //test
+   //Method that clear all Properties In order to start new operation
     func clear() {
         stringNumbers = [String()]
         operators = ["+"]
         numbersDoubles = []
         number = 0.0
     }
-    //Test
+    
+    //Method that add a number
     func addNewNumber(_ newNumber: Int) ->String {
         if let stringNumber = stringNumbers.last {
             var stringNumberMutable = stringNumber
@@ -143,25 +147,33 @@ class Calculate {
         }
         return String(newNumber)
     }
-    //Test
+    
+    //Method that add a new operator
     func addNewOperator(_ sign: String) ->String {
         if canAddOperator {
             operators.append(sign)
             stringNumbers.append("")
-            //updateDisplay()
             return sign
         }
-        return " "
+        return ""
     }
-    //test
+    
+    // Method to add dot
     func addDot() ->String {
         if let stringNumber = stringNumbers.last {
-            if stringNumber.contains("."){
-                selectionDelegate?.alertOnActionButton(name: "Une virgule en trop", description: "On ne peut pas utiliser 2 virgules")
-            }else if let stringNumber = stringNumbers.last {
-                var stringNumberMutable = stringNumber
-                stringNumberMutable += "."
-                stringNumbers[stringNumbers.count-1] = stringNumberMutable
+            //control if a number is tap before
+            if isExpressionCorrect {
+                //control that there is no dot already tap on the figure
+                if stringNumber.contains("."){
+                    selectionDelegate?.alertOnActionButton(name: "Une virgule en trop", description: "On ne peut pas utiliser 2 virgules")
+                    return ""
+                }else if let stringNumber = stringNumbers.last { //all is correct we do add dot
+                    var stringNumberMutable = stringNumber
+                    stringNumberMutable += "."
+                    stringNumbers[stringNumbers.count-1] = stringNumberMutable
+                }
+            }else {
+                return ""
             }
         }
         return "."
