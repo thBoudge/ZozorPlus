@@ -1,7 +1,9 @@
+
+
 # ZozorPlus
 
 
-![Screenshot](ZozorPlusScreen.png )
+![Screenshot](ZozorPlusScreen.png ){:height="700px" width="400px"}
 
 
 ZozorPlus is a calculator app's with all feature that we can expect on a calculatore (+-x/), calcul priority and use of dot
