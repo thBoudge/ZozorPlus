@@ -3,10 +3,7 @@
 # ZozorPlus
 
 
-![Screenshot](ZozorPlusScreen.png ){:height="700px" width="400px"}
-
-
-<img src="https://github.com/thBoudge/ZozorPlus/blob/master/ZozorPlusScreen.png" width="100" height="100">
+<img src="https://github.com/thBoudge/ZozorPlus/blob/master/ZozorPlusScreen.png" width="200" height="400">
 
 
 ZozorPlus is a calculator app's with all feature that we can expect on a calculatore (+-x/), calcul priority and use of dot
