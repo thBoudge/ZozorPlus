@@ -1,12 +1,24 @@
-![OpenClassrooms Logo](https://lh3.googleusercontent.com/jHFLsk0a2IDpofZxpPhZNgOsydDD1dqbUZKfO_hwvexataXSPp0oHMDm5WJJkZ8WFLnNqtEiLRHGRRw=w2880-h1632)
-
-This repository is the base code for [this project](https://openclassrooms.com/projects/ameliorer-une-application-existante) on openclassrooms.com.
-It's part of OpenClassrooms' iOS path which can be found here.
-
 # ZozorPlus
-Students are supposed to clone or fork the repo and improve it. Their focus should be on the following aspects :
+
+
+![Screenshot](ZozorPlusScreen.png)
+
+
+ZozorPlus is a calculator app's with all feature that we can expect on a calculatore (+-x/), calcul priority and use of dot
+
+This app' is a  fork from a repo that have been correxted and improved. 
+
+Focus have been done on the following aspects :
 - Responsiveness
 - Documentation
 - MVC compliance
-- Tests
-- Bonus feature
+- Unit Tests
+
+
+## Start
+Supports: IOS 11.x and Above
+
+
+## Dependencies
+This repository is the base code for [this project](https://openclassrooms.com/projects/ameliorer-une-application-existante) on openclassrooms.com.
+It's part of OpenClassrooms' iOS path which can be found here.

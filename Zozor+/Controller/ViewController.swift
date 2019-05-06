@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     // MARK: - Properties
 
     private let calculate =  Calculate()
-    private var operationIsInProcess: Bool = false
+    private var operationIsInProcess: Bool = false // Does we start a new operation tapping or not
     
 
     // MARK: - Outlets
@@ -59,7 +59,7 @@ class ViewController: UIViewController {
     // Function in order to cancel and start a new operation
     func cancel() {
         calculate.clear()
-        textView.text = "0"
+        textView.text = ""
     }
 }
 

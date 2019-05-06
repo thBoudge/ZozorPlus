@@ -24,7 +24,7 @@ class CalculateTest: XCTestCase {
     // LOGIC that simulate tap on button and control if total of operation is correct
     func addNewOperation(number : String, total : String){
         //given
-        var temporyVar :String = "test"
+        var temporyVar :String = "total"
         for char in number {
             
             if char == "."{
@@ -36,7 +36,7 @@ class CalculateTest: XCTestCase {
              }else{
                temporyVar =  calculate.addNewNumber(Int(String(char))!)
             }
-            print(temporyVar)
+            
         }
         XCTAssert(temporyVar == total)
     }
@@ -59,13 +59,13 @@ class CalculateTest: XCTestCase {
                     }
                 case "=":
                     temporyVar = calculate.calculateTotal()
-                    if temporyVar == "0.0"{
+                    if temporyVar == "0.0"{  //divide by Zero
                         return false
-                    }else  if temporyVar == ""{
+                    }else  if temporyVar == ""{ // wrong expression start =
                         return false
                 }
                 default :
-                    temporyVar =  calculate.addNewNumber(Int(String(char))!)
+                    temporyVar =  calculate.addNewNumber(Int(String(char))!) // test all is alright
             }
           
         }
@@ -111,7 +111,6 @@ class CalculateTest: XCTestCase {
     
     // Test 10/2+2x2=9
     func testTotalValueIsZero_WhenIncrementingDivisionPlusMultiplicationOperation_ThenTotalValueIsNine(){
-        //testOperator(number: ["10","2","2","2"], operate: ["+","/","+","x"], total: "9.0")
         addNewOperation(number: "10/2+2x2=", total: "9.0")
     }
     
@@ -165,5 +164,6 @@ class CalculateTest: XCTestCase {
         
         XCTAssertFalse(controlAlert(number: "10.2/0+2x2=" ))
     }
+    
     
 }

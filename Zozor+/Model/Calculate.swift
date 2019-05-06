@@ -16,10 +16,10 @@ protocol AlertSelectionDelegate {
 class Calculate {
 
 // MARK: - Properties
-    private var stringNumbers: [String]
-    private var operators: [String]
-    private var numbersDoubles: [Double]
-    private var number: Double
+    private var stringNumbers: [String] // array of number add
+    private var operators: [String] // array of Operator add
+    private var numbersDoubles: [Double] // array of number add translate in Double
+    private var number: Double // Use to calculate operation
     var selectionDelegate : AlertSelectionDelegate?
     
     init() {
@@ -36,9 +36,9 @@ class Calculate {
         if let stringNumber = stringNumbers.last {
             if stringNumber.isEmpty {
                 if stringNumbers.count == 1 {
-                    selectionDelegate?.alertOnActionButton(name: "Zéro!", description: "Démarrez un nouveau calcul !")
+                    selectionDelegate?.alertOnActionButton(name: "Démarrez un nouveau calcul !", description: "Saisir un numéro pour commencer")
                 } else {
-                    selectionDelegate?.alertOnActionButton(name: "Zéro!", description: "Entrez une expression correcte !")
+                    selectionDelegate?.alertOnActionButton(name: "Erreur expression", description: "Entrez une expression correcte !")
                 }
                 return false
             }
@@ -50,7 +50,7 @@ class Calculate {
     var canAddOperator: Bool {
         if let stringNumber = stringNumbers.last {
             if stringNumber.isEmpty {
-                selectionDelegate?.alertOnActionButton(name: "Zéro!", description: "Expression incorrecte !")
+                selectionDelegate?.alertOnActionButton(name: "Expression incorrecte !", description: "Vous ne pouvez entrer un opérateur")
                 return false
             }
         }
@@ -88,10 +88,8 @@ class Calculate {
     }
     
     // Method to respect priority operation in order to start with x and /
-    func priorityMultiDivi() -> Bool{
+    private func priorityMultiDivi() -> Bool{
         for i in 1..<operators.count {
-            if i < operators.count {
-                number = numbersDoubles[i-1]
                 if operators[i] == "x" {
                     operateMultiDivAndTroncateArray(index: i, sign: "x")
                 }else if operators[i] == "/" {
@@ -103,19 +101,18 @@ class Calculate {
                         operateMultiDivAndTroncateArray(index: i, sign: "/")
                     }
                 }
-            }
         }
         return true
     }
     
     //Method that multiplicate and divide figure and change numbersDouble to reflect result
-    func operateMultiDivAndTroncateArray(index:Int , sign: String) {
+    private func operateMultiDivAndTroncateArray(index:Int , sign: String) {
         if sign == "x"{
             number = numbersDoubles[index-1] * numbersDoubles[index]
         }else if sign == "/"{
             number = numbersDoubles[index-1] / numbersDoubles[index]
         }
-        // In case 2-2x9 if last sign is - before x or \ , in order to keep - 2-18
+        // In case 2-2x9 if last sign is - before x or \ , in order to keep - 2+0.0-18
         if index == operators.count-1 && operators[index-1] == "-" {
             numbersDoubles[index-1] = 0.0 
             numbersDoubles[index] = number
@@ -167,7 +164,7 @@ class Calculate {
                 if stringNumber.contains("."){
                     selectionDelegate?.alertOnActionButton(name: "Une virgule en trop", description: "On ne peut pas utiliser 2 virgules")
                     return ""
-                }else if let stringNumber = stringNumbers.last { //all is correct we do add dot
+                }else  { //all is correct we do add dot
                     var stringNumberMutable = stringNumber
                     stringNumberMutable += "."
                     stringNumbers[stringNumbers.count-1] = stringNumberMutable
