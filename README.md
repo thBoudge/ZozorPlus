@@ -6,9 +6,10 @@
 <img src="https://github.com/thBoudge/ZozorPlus/blob/master/ZozorPlusScreen.png" width="200" height="400">
 
 
-ZozorPlus is a calculator app's with all feature that we can expect on a calculatore (+-x/), calcul priority and use of dot
+ZozorPlus is a calculator app with all features that you’d expect on a calculator (+-x/), calcul priority and use of dot
 
-This app' is a  fork from a repo that have been correxted and improved. 
+
+This app is a  fork from a repo that have been correxted and improved. 
 
 Focus have been done on the following aspects :
 - Responsiveness
